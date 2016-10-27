@@ -11,6 +11,6 @@ namespace SelfHostServer
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
-        public IEnumerable<Guid> FriendIds { get; set; }
+        public HashSet<Guid> FriendIds { get; set; }
     }
 }
