@@ -81,22 +81,6 @@ namespace SelfHostServer
         }
     }
 
-    public class ContosoChatHub : Hub
-    {
-        public void NewContosoChatMessage(string name, string message)
-        {
-            Clients.All.addNewMessageToPage(name, message);
-
-
-            var x = this.Context.Request;
-            var y = this.Context.User;
-
-
-            Console.WriteLine();
-            //Clients.User()
-        }
-    }
-
     //public class StockTickerHub : Hub
     //{
     //    public IEnumerable<Stock> GetAllStocks()
