@@ -146,6 +146,39 @@ namespace ConsoleClient
                     hubProxy.Invoke("Send", "NetClient", line);
                 }
             } while (true);
+
+
+        }
+    }
+
+    public class AutomatedClient
+    {
+        private string username;
+
+        public AutomatedClient(string username)
+        {
+            this.username = username;
+        }
+
+        public void Start()
+        {
+            var url = @"http://localhost:8080/signalr";
+            var hubName = @"myHub";
+
+            var hubConnection = new HubConnection(url, new Dictionary<string, string>
+            {
+                { "token", this.username }
+            });
+
+            var hubProxy = hubConnection.CreateHubProxy(hubName);
+
+            //Attach event handler for calls from server
+
+            hubConnection.Start().Wait();
+
+            //Call the server here
+
+
         }
     }
 }

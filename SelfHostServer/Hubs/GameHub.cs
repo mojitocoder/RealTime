@@ -11,21 +11,36 @@ namespace SelfHostServer
     {
         private readonly static ConnectionRegistry<string> connectionRegistry = new ConnectionRegistry<string>();
 
+        private string GetUserName()
+        {
+            return Context.QueryString["token"] ?? "unknown";
+        }
 
         public override async Task OnConnected()
         {
+            connectionRegistry.Add(GetUserName(), Context.ConnectionId);
+
             await base.OnConnected();
         }
 
         public override async Task OnDisconnected(bool stopCalled)
         {
+            connectionRegistry.Remove(GetUserName(), Context.ConnectionId);
+
             await base.OnDisconnected(stopCalled);
         }
 
         public override async Task OnReconnected()
         {
+            if (!connectionRegistry.GetConnections(GetUserName()).Contains(Context.ConnectionId))
+            {
+                connectionRegistry.Add(GetUserName(), Context.ConnectionId);
+            }
+
             await base.OnReconnected();
         }
+
+                
 
         /// <summary>
         /// The user call this method to register 
@@ -50,5 +65,11 @@ namespace SelfHostServer
     {
         Crucible = 0, // players against one another
         Vanguard = 1 // players cooperate
+    }
+
+    public class OnlineUser
+    {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
     }
 }
