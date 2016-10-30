@@ -61,11 +61,10 @@ namespace ConsoleClient
             hubConnection.TraceWriter = Console.Out;
 
 
-            // ==============================
-            // Call some methods on the server
-            // ==============================
 
-            //Handle error from server side method invocation
+            // ==============================
+            // Handle error from server side method invocation
+            // ==============================
             try
             {
                 IEnumerable<Stock> allStocks = stockTickerHubProxy.Invoke<IEnumerable<Stock>>("GetAllStocks").Result;
@@ -78,6 +77,12 @@ namespace ConsoleClient
             {
                 Console.WriteLine("Error invoking GetAllStocks: {0}", ex.Message);
             }
+
+
+
+            // ==============================
+            // Call some methods on the server
+            // ==============================
 
             //Call a method on the server - with server returning nothing
             stockTickerHubProxy.Invoke("JoinGroup", "SomeRandomGroup");
@@ -119,13 +124,28 @@ namespace ConsoleClient
 
             var hubProxy = hubConnection.CreateHubProxy(hubName);
 
+            //Listen to the event from the server
             hubProxy.On("addMessage", (string name, string message) =>
             {
                 Console.WriteLine($"{name}: {message}");
             });
 
             hubConnection.Start().Wait();
-            Console.ReadLine();
+
+            do
+            {
+                var line = Console.ReadLine();
+
+                if (line.Contains(":")) //send direct
+                {
+                    var parts = line.Split(':');
+                    hubProxy.Invoke("SendToUser", parts[0], "NetClient", parts[1]);
+                }
+                else //send to all
+                {
+                    hubProxy.Invoke("Send", "NetClient", line);
+                }
+            } while (true);
         }
     }
 }

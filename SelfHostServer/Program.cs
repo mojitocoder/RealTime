@@ -33,8 +33,7 @@ namespace SelfHostServer
         public string GetUserId(IRequest request)
         {
             var token = request.QueryString["token"];
-
-            return token ?? "unknown";
+            return token;
         }
     }
 
@@ -66,7 +65,7 @@ namespace SelfHostServer
             await base.OnConnected();
         }
 
-        //this method is not being called from the clients
+        //This method is being called from the clients
         public void Send(string name, string message)
         {
             //call addMessage method on javascript in all clients
@@ -78,6 +77,11 @@ namespace SelfHostServer
             var username = this.Context.QueryString["token"];
 
             Console.WriteLine();
+        }
+
+        public void SendToUser(string username, string name, string message)
+        {
+            Clients.User(username).addMessage(name, message);
         }
     }
 

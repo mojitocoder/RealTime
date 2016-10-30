@@ -9,6 +9,9 @@ namespace SelfHostServer
 {
     public class GameHub : Hub
     {
+        private readonly static ConnectionRegistry<string> connectionRegistry = new ConnectionRegistry<string>();
+
+
         public override async Task OnConnected()
         {
             await base.OnConnected();

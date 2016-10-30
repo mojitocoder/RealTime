@@ -83,7 +83,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameHub.cs" />
+    <Compile Include="Hubs\GameHub.cs" />
+    <Compile Include="Models\ConnectionMapping.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\GameRepository.cs" />
+    <Compile Include="Models\Session.cs" />
+    <Compile Include="Models\TokenRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\User.cs" />
@@ -98,9 +103,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hubs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
