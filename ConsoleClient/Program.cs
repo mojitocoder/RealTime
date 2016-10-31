@@ -157,8 +157,11 @@ namespace ConsoleClient
             var clients = Enumerable.Range(0, 10).Select(foo => new AutomatedClient("user " + foo, random));
             foreach (var item in clients)
             {
-                item.Start();
+                item.Start(false);
             }
+
+            //This guy will broadcast, and listen as well
+            new AutomatedClient("big.ears", random).Start(true);
             
             Console.ReadLine();
         }
@@ -177,7 +180,7 @@ namespace ConsoleClient
             this.sentences = File.ReadLines(@"Data\sentences.txt").ToList();
         }
 
-        public void Start()
+        public void Start(bool listening)
         {
             var url = @"http://localhost:8080/signalr";
             var hubName = @"myHub";
@@ -190,6 +193,13 @@ namespace ConsoleClient
             var hubProxy = hubConnection.CreateHubProxy(hubName);
 
             //Attach event handler for calls from server
+            if (listening)
+            {
+                hubProxy.On("addMessage", (string name, string message) =>
+                {
+                    Console.WriteLine($"{name}  : {message}");
+                });
+            }
 
             hubConnection.Start().Wait();
 
