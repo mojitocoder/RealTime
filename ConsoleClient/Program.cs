@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -112,7 +114,7 @@ namespace ConsoleClient
         }
 
 
-        static void Main(string[] args)
+        static void Main__(string[] args)
         {
             var url = @"http://localhost:8080/signalr";
             var hubName = @"myHub";
@@ -146,18 +148,33 @@ namespace ConsoleClient
                     hubProxy.Invoke("Send", "NetClient", line);
                 }
             } while (true);
+        }
 
-
+        static void Main(string[] args)
+        {
+            //Initiate a number of client to broadcast random messages
+            var random = new Random();
+            var clients = Enumerable.Range(0, 10).Select(foo => new AutomatedClient("user " + foo, random));
+            foreach (var item in clients)
+            {
+                item.Start();
+            }
+            
+            Console.ReadLine();
         }
     }
 
     public class AutomatedClient
     {
         private string username;
+        private List<string> sentences;
+        private Random random;
 
-        public AutomatedClient(string username)
+        public AutomatedClient(string username, Random random)
         {
             this.username = username;
+            this.random = random;
+            this.sentences = File.ReadLines(@"Data\sentences.txt").ToList();
         }
 
         public void Start()
@@ -177,8 +194,12 @@ namespace ConsoleClient
             hubConnection.Start().Wait();
 
             //Call the server here
-
-
+            Observable.Interval(TimeSpan.FromMilliseconds(random.Next(300, 1000))).Subscribe((tick) =>
+            {
+                var sentence = sentences[random.Next(sentences.Count)];
+                //Console.WriteLine($"{username} : {sentence}");
+                hubProxy.Invoke("Send", username, sentence);
+            });
         }
     }
 }

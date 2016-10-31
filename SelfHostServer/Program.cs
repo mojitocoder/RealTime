@@ -76,7 +76,7 @@ namespace SelfHostServer
 
             var username = this.Context.QueryString["token"];
 
-            Console.WriteLine();
+            //Console.WriteLine();
         }
 
         public void SendToUser(string username, string name, string message)
