@@ -10,6 +10,8 @@ namespace SelfHostServer
     public class GameHub : Hub
     {
         private readonly static ConnectionRegistry<string> connectionRegistry = new ConnectionRegistry<string>();
+        //private readonly sta
+
 
         private string GetUserName()
         {
@@ -64,6 +66,19 @@ namespace SelfHostServer
         {
             //Broadcast the message to all connected clients
             Clients.All.AddMessage(GetUserName(), message);
+        }
+
+        public IEnumerable<OnlineUser> GetOnlineUsers()
+        {
+            var users = new UserRepository().GetAllUsers().ToDictionary(foo => foo.UserName, foo => foo.FullName);
+
+            return connectionRegistry.GetAllKeys()
+                        .Where(foo => users.ContainsKey(foo)) //this step, in theory, is not necessary
+                        .Select(foo => new OnlineUser
+                        {
+                            UserName = foo,
+                            FullName = users[foo]
+                        });
         }
     }
 

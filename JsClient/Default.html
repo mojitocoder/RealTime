@@ -30,7 +30,7 @@
         $(function () {
 
             // Get the user name and store it to prepend to messages.
-            $('#displayname').val(prompt('Enter your name:', ''));
+            $('#displayname').val(prompt('Enter your name:', 'madalyn.staff'));
 
             //Set the hubs URL for the connection
             $.connection.hub.url = "http://localhost:8080/signalr";

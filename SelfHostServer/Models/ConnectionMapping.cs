@@ -70,5 +70,10 @@ namespace SelfHostServer
                 }
             }
         }
+
+        public IEnumerable<T> GetAllKeys()
+        {
+            return globalConnections.Keys.AsEnumerable();
+        }
     }
 }

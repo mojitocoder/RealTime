@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedServerClient;
 
 namespace ConsoleClient
 {
@@ -152,64 +153,25 @@ namespace ConsoleClient
 
         static void Main(string[] args)
         {
+            //Load the list of users
+            var users = File.ReadAllLines(@"Data\users.txt")
+                            .Select(foo => foo.Trim().ToLower().Replace(' ', '.'))
+                            .ToList();
+
             //Initiate a number of client to broadcast random messages
             var random = new Random();
-            var clients = Enumerable.Range(0, 10).Select(foo => new AutomatedClient("user " + foo, random));
+            var clients = Enumerable.Range(0, 10).Select(foo => new AutomatedClient(users.GetRandom(random), random));
             foreach (var item in clients)
             {
                 item.Start(false);
             }
 
             //This guy will broadcast, and listen as well
-            new AutomatedClient("big.ears", random).Start(true);
+            new AutomatedClient(users.GetRandom(random), random).Start(true);
 
             Console.ReadLine();
         }
     }
 
-    public class AutomatedClient
-    {
-        private string username;
-        private List<string> sentences;
-        private Random random;
 
-        public AutomatedClient(string username, Random random)
-        {
-            this.username = username;
-            this.random = random;
-            this.sentences = File.ReadLines(@"Data\sentences.txt").ToList();
-        }
-
-        public void Start(bool listening)
-        {
-            var url = @"http://localhost:8080/signalr";
-            var hubName = @"gameHub";
-
-            var hubConnection = new HubConnection(url, new Dictionary<string, string>
-            {
-                { "token", this.username }
-            });
-
-            var hubProxy = hubConnection.CreateHubProxy(hubName);
-
-            //Attach event handler for calls from server
-            if (listening)
-            {
-                hubProxy.On("AddMessage", (string name, string message) =>
-                {
-                    Console.WriteLine($"{name}  : {message}");
-                });
-            }
-
-            hubConnection.Start().Wait();
-
-            //Call the server here
-            Observable.Interval(TimeSpan.FromMilliseconds(random.Next(300, 1000))).Subscribe((tick) =>
-            {
-                var sentence = sentences[random.Next(sentences.Count)];
-                //Console.WriteLine($"{username} : {sentence}");
-                hubProxy.Invoke("SendToAll", sentence);
-            });
-        }
-    }
 }

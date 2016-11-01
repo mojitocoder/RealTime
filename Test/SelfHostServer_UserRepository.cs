@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using SelfHostServer;
 
 namespace Test
 {
@@ -11,17 +12,41 @@ namespace Test
     public class SelfHostServer_UserRepository
     {
         [Fact]
-        public void GetAll_Successful()
+        public void GetAllUsers_Successful()
         {
-            int minFriends = 5;
-            var userRepo = new SelfHostServer.UserRepository(minFriends);
-            var users = userRepo.GetAll();
+
+            var userRepo = new UserRepository();
+            var users = userRepo.GetAllUsers();
 
             Assert.NotEmpty(users);
             foreach (var user in users)
             {
-                Assert.True(user.FriendIds.Count >= minFriends);
+                Assert.True(user.FriendIds.Count >= UserRepository.MinFriends);
             }
+        }
+
+        [Fact]
+        public void GetAllUsers_Is_Deterministic_Per_Instance()
+        {
+            var userRepo = new UserRepository();
+
+            var usersAttempt1 = userRepo.GetAllUsers();
+            var usersAttempt2 = userRepo.GetAllUsers();
+            var usersAttempt3 = userRepo.GetAllUsers();
+
+            Assert.Equal<User>(usersAttempt1, usersAttempt2);
+            Assert.Equal<User>(usersAttempt1, usersAttempt3);
+        }
+
+        [Fact]
+        public void GetAllUsers_Is_Deterministic_Per_Any_Instance()
+        {
+            var usersAttempt1 = new UserRepository().GetAllUsers();
+            var usersAttempt2 = new UserRepository().GetAllUsers();
+            var usersAttempt3 = new UserRepository().GetAllUsers();
+
+            Assert.Equal<User>(usersAttempt1, usersAttempt2);
+            Assert.Equal<User>(usersAttempt1, usersAttempt3);
         }
     }
 }

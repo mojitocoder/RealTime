@@ -9,14 +9,10 @@ namespace SelfHostServer
 {
     public class UserRepository
     {
-        private int minFriends;
+        public static readonly int MinFriends = 5;
+        private static readonly IList<User> users;
 
-        public UserRepository(int minFriends)
-        {
-            this.minFriends = minFriends;
-        }
-
-        public IEnumerable<User> GetAll()
+        static UserRepository()
         {
             //Function to convert fullname => username
             Func<string, string> funcConvert = (name) =>
@@ -26,7 +22,7 @@ namespace SelfHostServer
             };
 
             //Load the list of full names from text file
-            var users = File.ReadLines(@"Data\users.txt")
+            users = File.ReadLines(@"Data\users.txt")
                             .Select(name => name.Trim())
                             .Select(name => new User
                             {
@@ -42,7 +38,7 @@ namespace SelfHostServer
             //Assign random friends
             foreach (var user in users)
             {
-                while (user.FriendIds.Count < minFriends)
+                while (user.FriendIds.Count < MinFriends)
                 {
                     var index = random.Next(users.Count); //a random number in the possible range
                     var id = users[index].Id;
@@ -54,10 +50,12 @@ namespace SelfHostServer
                     }
                 }
             }
-
-            return users;
         }
 
-
+        public IEnumerable<User> GetAllUsers()
+        {
+            //var users = new Userr
+            return users;
+        }
     }
 }
