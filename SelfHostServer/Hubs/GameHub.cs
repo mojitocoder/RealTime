@@ -80,6 +80,23 @@ namespace SelfHostServer
                             FullName = users[foo]
                         });
         }
+
+        public IEnumerable<OnlineUser> GetOnlineFriends()
+        {
+            var allUsers = new UserRepository().GetAllUsers();
+
+            var userDictionary = allUsers.ToDictionary(foo => foo.Id, foo => new OnlineUser
+            {
+                UserName = foo.UserName,
+                FullName = foo.FullName
+            });
+
+            var currentUser = allUsers.First(foo => foo.UserName == GetUserName());
+
+            var friends = currentUser.FriendIds.Select(foo => userDictionary[foo]);
+
+            return friends;
+        }
     }
 
     public enum GameMode

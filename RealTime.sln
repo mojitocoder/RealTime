@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedServerClient", "SharedServerClient\SharedServerClient.csproj", "{128745C5-87C2-4645-BA11-A33DE461BB36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleListener", "ConsoleListener\ConsoleListener.csproj", "{984E1023-00C6-4788-8F13-A5A18235333C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{128745C5-87C2-4645-BA11-A33DE461BB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{128745C5-87C2-4645-BA11-A33DE461BB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{128745C5-87C2-4645-BA11-A33DE461BB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{984E1023-00C6-4788-8F13-A5A18235333C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984E1023-00C6-4788-8F13-A5A18235333C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984E1023-00C6-4788-8F13-A5A18235333C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984E1023-00C6-4788-8F13-A5A18235333C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

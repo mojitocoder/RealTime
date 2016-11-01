@@ -172,6 +172,4 @@ namespace ConsoleClient
             Console.ReadLine();
         }
     }
-
-
 }
