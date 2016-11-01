@@ -162,7 +162,7 @@ namespace ConsoleClient
 
             //This guy will broadcast, and listen as well
             new AutomatedClient("big.ears", random).Start(true);
-            
+
             Console.ReadLine();
         }
     }
@@ -183,7 +183,7 @@ namespace ConsoleClient
         public void Start(bool listening)
         {
             var url = @"http://localhost:8080/signalr";
-            var hubName = @"myHub";
+            var hubName = @"gameHub";
 
             var hubConnection = new HubConnection(url, new Dictionary<string, string>
             {
@@ -195,7 +195,7 @@ namespace ConsoleClient
             //Attach event handler for calls from server
             if (listening)
             {
-                hubProxy.On("addMessage", (string name, string message) =>
+                hubProxy.On("AddMessage", (string name, string message) =>
                 {
                     Console.WriteLine($"{name}  : {message}");
                 });
@@ -208,7 +208,7 @@ namespace ConsoleClient
             {
                 var sentence = sentences[random.Next(sentences.Count)];
                 //Console.WriteLine($"{username} : {sentence}");
-                hubProxy.Invoke("Send", username, sentence);
+                hubProxy.Invoke("SendToAll", sentence);
             });
         }
     }

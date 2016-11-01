@@ -40,7 +40,7 @@ namespace SelfHostServer
             await base.OnReconnected();
         }
 
-                
+
 
         /// <summary>
         /// The user call this method to register 
@@ -54,11 +54,17 @@ namespace SelfHostServer
             var connectionId = Context.ConnectionId;
 
             //keep in a queue somewhere, resolve every so often
-            
+
             //Clients.Client("").
         }
 
-        
+
+        //This method is being called from the clients
+        public void SendToAll(string message)
+        {
+            //Broadcast the message to all connected clients
+            Clients.All.AddMessage(GetUserName(), message);
+        }
     }
 
     public enum GameMode
