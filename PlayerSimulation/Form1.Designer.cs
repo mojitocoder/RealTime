@@ -28,21 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cboUser = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cboFriend = new System.Windows.Forms.ComboBox();
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // cboUser
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(183, 32);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(523, 33);
-            this.comboBox1.TabIndex = 0;
+            this.cboUser.FormattingEnabled = true;
+            this.cboUser.Location = new System.Drawing.Point(183, 32);
+            this.cboUser.Name = "cboUser";
+            this.cboUser.Size = new System.Drawing.Size(523, 33);
+            this.cboUser.TabIndex = 0;
+            this.cboUser.SelectedIndexChanged += new System.EventHandler(this.cboUser_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -62,13 +63,13 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Online friend";
             // 
-            // comboBox2
+            // cboFriend
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(183, 93);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(523, 33);
-            this.comboBox2.TabIndex = 2;
+            this.cboFriend.FormattingEnabled = true;
+            this.cboFriend.Location = new System.Drawing.Point(183, 93);
+            this.cboFriend.Name = "cboFriend";
+            this.cboFriend.Size = new System.Drawing.Size(523, 33);
+            this.cboFriend.TabIndex = 2;
             // 
             // btnPlay
             // 
@@ -95,11 +96,12 @@
             this.Controls.Add(this.btnLog);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.cboFriend);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cboUser);
             this.Name = "Form1";
             this.Text = "Live game with friends";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -107,10 +109,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cboUser;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cboFriend;
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.TextBox btnLog;
     }

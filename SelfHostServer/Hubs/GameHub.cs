@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using SharedServerClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,13 +78,24 @@ namespace SelfHostServer
                         .Select(foo => new OnlineUser
                         {
                             UserName = foo,
-                            FullName = users[foo]
+                            FullName = users[foo],
+                            Online = true
                         });
         }
 
-        public IEnumerable<OnlineUser> GetOnlineFriends()
+        public IEnumerable<OnlineUser> GetFriends()
         {
             var allUsers = new UserRepository().GetAllUsers();
+
+            //locate the current user
+
+
+
+            //locate all friends
+
+            //work out who are online, who are not
+
+
 
             var userDictionary = allUsers.ToDictionary(foo => foo.Id, foo => new OnlineUser
             {
@@ -105,9 +117,9 @@ namespace SelfHostServer
         Vanguard = 1 // players cooperate
     }
 
-    public class OnlineUser
-    {
-        public string UserName { get; set; }
-        public string FullName { get; set; }
-    }
+    //public class OnlineUser
+    //{
+    //    public string UserName { get; set; }
+    //    public string FullName { get; set; }
+    //}
 }
