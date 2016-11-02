@@ -24,6 +24,7 @@ namespace SelfHostServer
             //Load the list of full names from text file
             users = File.ReadLines(@"Data\users.txt")
                             .Select(name => name.Trim())
+                            .OrderBy(foo => foo)
                             .Select(name => new User
                             {
                                 Id = Guid.NewGuid(),
@@ -47,6 +48,7 @@ namespace SelfHostServer
                     if (user.Id != id && !user.FriendIds.Contains(id))
                     {
                         user.FriendIds.Add(id);
+                        users[index].FriendIds.Add(user.Id);
                     }
                 }
             }

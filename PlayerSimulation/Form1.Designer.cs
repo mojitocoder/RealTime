@@ -33,72 +33,80 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboFriend = new System.Windows.Forms.ComboBox();
             this.btnPlay = new System.Windows.Forms.Button();
-            this.btnLog = new System.Windows.Forms.TextBox();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cboUser
             // 
             this.cboUser.FormattingEnabled = true;
-            this.cboUser.Location = new System.Drawing.Point(183, 32);
+            this.cboUser.Location = new System.Drawing.Point(92, 17);
+            this.cboUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboUser.Name = "cboUser";
-            this.cboUser.Size = new System.Drawing.Size(523, 33);
+            this.cboUser.Size = new System.Drawing.Size(264, 21);
             this.cboUser.TabIndex = 0;
             this.cboUser.SelectedIndexChanged += new System.EventHandler(this.cboUser_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 35);
+            this.label1.Location = new System.Drawing.Point(13, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 25);
+            this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "User";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 96);
+            this.label2.Location = new System.Drawing.Point(13, 50);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 25);
+            this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Online friend";
             // 
             // cboFriend
             // 
             this.cboFriend.FormattingEnabled = true;
-            this.cboFriend.Location = new System.Drawing.Point(183, 93);
+            this.cboFriend.Location = new System.Drawing.Point(92, 48);
+            this.cboFriend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboFriend.Name = "cboFriend";
-            this.cboFriend.Size = new System.Drawing.Size(523, 33);
+            this.cboFriend.Size = new System.Drawing.Size(264, 21);
             this.cboFriend.TabIndex = 2;
             // 
             // btnPlay
             // 
-            this.btnPlay.Location = new System.Drawing.Point(520, 152);
+            this.btnPlay.Location = new System.Drawing.Point(260, 79);
+            this.btnPlay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(186, 52);
+            this.btnPlay.Size = new System.Drawing.Size(93, 27);
             this.btnPlay.TabIndex = 4;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
-            // btnLog
+            // txtLog
             // 
-            this.btnLog.Location = new System.Drawing.Point(31, 237);
-            this.btnLog.Multiline = true;
-            this.btnLog.Name = "btnLog";
-            this.btnLog.Size = new System.Drawing.Size(675, 479);
-            this.btnLog.TabIndex = 5;
+            this.txtLog.Location = new System.Drawing.Point(16, 123);
+            this.txtLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(340, 251);
+            this.txtLog.TabIndex = 5;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(731, 742);
-            this.Controls.Add(this.btnLog);
+            this.ClientSize = new System.Drawing.Size(366, 386);
+            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cboFriend);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboUser);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Live game with friends";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -114,7 +122,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboFriend;
         private System.Windows.Forms.Button btnPlay;
-        private System.Windows.Forms.TextBox btnLog;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }
 

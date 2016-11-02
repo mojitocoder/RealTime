@@ -73,7 +73,7 @@ namespace SelfHostServer
         {
             var users = new UserRepository().GetAllUsers().ToDictionary(foo => foo.UserName, foo => foo.FullName);
 
-            return connectionRegistry.GetAllKeys()
+            return connectionRegistry.GetKeys()
                         .Where(foo => users.ContainsKey(foo)) //this step, in theory, is not necessary
                         .Select(foo => new OnlineUser
                         {
@@ -86,26 +86,19 @@ namespace SelfHostServer
         public IEnumerable<OnlineUser> GetFriends()
         {
             var allUsers = new UserRepository().GetAllUsers();
+            var onlineUserNames = new HashSet<string>(connectionRegistry.GetKeys());
 
-            //locate the current user
+            var self = allUsers.First(foo => foo.UserName == GetUserName());
 
-
-
-            //locate all friends
-
-            //work out who are online, who are not
-
-
-
-            var userDictionary = allUsers.ToDictionary(foo => foo.Id, foo => new OnlineUser
-            {
-                UserName = foo.UserName,
-                FullName = foo.FullName
-            });
-
-            var currentUser = allUsers.First(foo => foo.UserName == GetUserName());
-
-            var friends = currentUser.FriendIds.Select(foo => userDictionary[foo]);
+            var friends = self.FriendIds
+                            .Select(foo => allUsers.First(bar => bar.Id == foo))
+                            .Select(foo => new OnlineUser
+                            {
+                                UserName = foo.UserName,
+                                FullName = foo.FullName,
+                                Online = onlineUserNames.Contains(foo.UserName)
+                            })
+                            .ToList();
 
             return friends;
         }

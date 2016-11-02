@@ -23,6 +23,7 @@ namespace PlayerSimulation
             //load the list of users into the combobox
             var allUsers = File.ReadAllLines(@"Data\users.txt")
                             .Select(foo => foo.Trim())
+                            .OrderBy(foo => foo)
                             .Select(foo => new
                             {
                                 UserName = foo.ToLower().Replace(' ', '.'),
@@ -34,19 +35,41 @@ namespace PlayerSimulation
             cboUser.ValueMember = "UserName";
         }
 
-        private void cboUser_SelectedIndexChanged(object sender, EventArgs e)
+        private Player player = new Player();
+
+        private async void cboUser_SelectedIndexChanged(object sender, EventArgs e)
         {
             dynamic selectedItem = cboUser.Items[cboUser.SelectedIndex];
             var username = (string)selectedItem.UserName;
 
             //Go online as this user
-
+            player.Connect(username);
 
             //Now go and fetch the list of online users
+            var friends = await player.GetFriends();
+
+            //Print the list of all friends to the log
+            var lines = friends.Select(foo => string.Format($"{foo.UserName} : {foo.FullName} : {foo.Online }"));
+            var text = string.Format($"Friends of {username}:{Environment.NewLine}") + string.Join(Environment.NewLine, lines);
+            txtLog.Text = string.Format($"{text}{Environment.NewLine}{Environment.NewLine}{txtLog.Text}");
+
+            //Bind list of online friends to the Friend combo
+            var onlineFriends = friends.Where(foo => foo.Online)
+                                    .Select(foo => new
+                                    {
+                                        UserName = foo.UserName,
+                                        ShownName = string.Format($"{foo.FullName} ({foo.UserName})")
+                                    })
+                                    .ToList();
+
+            cboFriend.DataSource = onlineFriends;
+            cboFriend.DisplayMember = "ShownName";
+            cboFriend.ValueMember = "UserName";
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+
         }
     }
-
-
-
-
 }

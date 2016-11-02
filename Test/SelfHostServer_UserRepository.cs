@@ -48,5 +48,21 @@ namespace Test
             Assert.Equal<User>(usersAttempt1, usersAttempt2);
             Assert.Equal<User>(usersAttempt1, usersAttempt3);
         }
+
+        [Fact]
+        public void GetAllUsers_Friendship_Is_Mutual()
+        {
+            var userRepo = new UserRepository();
+            var users = userRepo.GetAllUsers();
+
+            foreach (var user in users)
+            {
+                foreach (var friendId in user.FriendIds)
+                {
+                    var friend = users.First(foo => foo.Id == friendId);
+                    Assert.Contains(user.Id, friend.FriendIds);
+                }
+            }
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace SelfHostServer
             }
         }
 
-        public IEnumerable<T> GetAllKeys()
+        public IEnumerable<T> GetKeys()
         {
             return globalConnections.Keys.AsEnumerable();
         }

@@ -51,13 +51,11 @@ namespace PlayerSimulation
             //});
         }
 
-        public IEnumerable<OnlineUser> GetOnlineFriends()
+        public async Task<IEnumerable<OnlineUser>> GetFriends()
         {
-
-            return null;
+            var friends = await hubProxy.Invoke<IEnumerable<OnlineUser>>("GetFriends");
+            return friends;
         }
-
-        //public IEnumerable
 
         public void Stop()
         {
