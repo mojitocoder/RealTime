@@ -13,7 +13,6 @@ namespace SelfHostServer
         private readonly static ConnectionRegistry<string> connectionRegistry = new ConnectionRegistry<string>();
         //private readonly sta
 
-
         private string GetUserName()
         {
             return Context.QueryString["token"] ?? "unknown";
@@ -43,8 +42,6 @@ namespace SelfHostServer
             await base.OnReconnected();
         }
 
-
-
         /// <summary>
         /// The user call this method to register 
         /// the interest to play a multi-player game.
@@ -68,6 +65,12 @@ namespace SelfHostServer
             //Broadcast the message to all connected clients
             Clients.All.AddMessage(GetUserName(), message);
         }
+
+        public void SendToFriend(string friendUserName,string message)
+        {
+            Clients.User(friendUserName).AddDirectMessage(GetUserName(), message);
+        }
+
 
         public IEnumerable<OnlineUser> GetOnlineUsers()
         {

@@ -41,7 +41,7 @@ namespace PlayerSimulation
         {
             dynamic selectedItem = cboUser.Items[cboUser.SelectedIndex];
             var username = (string)selectedItem.UserName;
-
+            
             //Go online as this user
             player.Connect(username);
 
@@ -69,7 +69,16 @@ namespace PlayerSimulation
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            //Start broadcasting events directly to the selected friend
+            dynamic selectedUser = cboUser.Items[cboUser.SelectedIndex];
+            var username = (string)selectedUser.UserName;
 
+            dynamic selectedFriend = cboFriend.Items[cboFriend.SelectedIndex];
+            var friend = (string)selectedFriend.UserName;
+
+            //TODO: Validation here to make sure both have been selected properly
+
+            player.PlayWith(friend, txtLog);
         }
     }
 }

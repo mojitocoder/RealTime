@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PlayerSimulation
 {
@@ -16,6 +17,8 @@ namespace PlayerSimulation
         private Random random = new Random();
         private HubConnection hubConnection;
         private IHubProxy hubProxy;
+        private IDisposable playWithHandler;
+        private IDisposable playWithObservable;
 
         public Player()
         {
@@ -34,11 +37,7 @@ namespace PlayerSimulation
 
             hubProxy = hubConnection.CreateHubProxy(hubName);
 
-            //Attach event handler for calls from server
-            //hubProxy.On("AddMessage", (string name, string message) =>
-            //{
-            //    Console.WriteLine($"{name}  : {message}");
-            //});
+
 
             hubConnection.Start().Wait();
 
@@ -62,6 +61,37 @@ namespace PlayerSimulation
             hubConnection.Stop();
         }
 
+        public void PlayWith(string username, TextBox log)
+        {
+            //Remove the previous handler
+            if (playWithHandler != null)
+                playWithHandler.Dispose();
+
+            //Attach event handler for calls from server
+            playWithHandler = hubProxy.On("AddDirectMessage", (string name, string message) =>
+            {
+                var text = string.Format($"{name}: {message} {Environment.NewLine}{log.Text}");
+
+                //Console.WriteLine(text);
+
+                log.Invoke((MethodInvoker)delegate
+                 {
+                     log.Text = text; // runs on UI thread
+                 });
+            });
+
+            if (playWithObservable != null)
+                playWithObservable.Dispose();
+
+            //Call the server here
+            playWithObservable = Observable.Interval(TimeSpan.FromMilliseconds(random.Next(300, 1000))).Subscribe((tick) =>
+            {
+                var sentence = sentences[random.Next(sentences.Count)];
+                //Console.WriteLine($"{username} : {sentence}");
+                hubProxy.Invoke("SendToFriend", username, sentence);
+            });
+        }
+
         public void Play()
         {
             //Call the server here
@@ -69,7 +99,7 @@ namespace PlayerSimulation
             {
                 var sentence = sentences[random.Next(sentences.Count)];
                 //Console.WriteLine($"{username} : {sentence}");
-                //hubProxy.Invoke("SendToAll", sentence);
+                hubProxy.Invoke("SendToAll", sentence);
             });
         }
     }
