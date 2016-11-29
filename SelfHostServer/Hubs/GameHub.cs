@@ -22,12 +22,16 @@ namespace SelfHostServer
         {
             connectionRegistry.Add(GetUserName(), Context.ConnectionId);
 
+            NotifyFriends(true);
+
             await base.OnConnected();
         }
 
         public override async Task OnDisconnected(bool stopCalled)
         {
             connectionRegistry.Remove(GetUserName(), Context.ConnectionId);
+
+            NotifyFriends(false);
 
             await base.OnDisconnected(stopCalled);
         }
@@ -38,6 +42,8 @@ namespace SelfHostServer
             {
                 connectionRegistry.Add(GetUserName(), Context.ConnectionId);
             }
+
+            NotifyFriends(true);
 
             await base.OnReconnected();
         }
@@ -58,6 +64,16 @@ namespace SelfHostServer
             //Clients.Client("").
         }
 
+        private void NotifyFriends(bool online)
+        {
+            var onlineFriends = GetFriends().Where(foo => foo.Online).Select(foo => foo.UserName).ToList();
+
+            //alert them of my online status
+            if (onlineFriends != null && onlineFriends.Count > 0)
+            {
+                Clients.Users(onlineFriends).NotifyFriends(GetUserName(), online);
+            }
+        }
 
         //This method is being called from the clients
         public void SendToAll(string message)
@@ -66,7 +82,7 @@ namespace SelfHostServer
             Clients.All.AddMessage(GetUserName(), message);
         }
 
-        public void SendToFriend(string friendUserName,string message)
+        public void SendToFriend(string friendUserName, string message)
         {
             Clients.User(friendUserName).AddDirectMessage(GetUserName(), message);
         }

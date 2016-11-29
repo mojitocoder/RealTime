@@ -37,8 +37,6 @@ namespace PlayerSimulation
 
             hubProxy = hubConnection.CreateHubProxy(hubName);
 
-
-
             hubConnection.Start().Wait();
 
             //Call the server here
@@ -48,6 +46,12 @@ namespace PlayerSimulation
             //    //Console.WriteLine($"{username} : {sentence}");
             //    hubProxy.Invoke("SendToAll", sentence);
             //});
+
+            var x = hubProxy.On("NotifyFriends", (string friendUserName, bool online) =>
+            {
+                Console.WriteLine($"User {friendUserName} has just come " + (online ? "online" : "offline"));
+            });
+
         }
 
         public async Task<IEnumerable<OnlineUser>> GetFriends()
