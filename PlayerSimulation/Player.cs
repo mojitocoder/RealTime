@@ -106,5 +106,23 @@ namespace PlayerSimulation
                 hubProxy.Invoke("SendToAll", sentence);
             });
         }
+
+        public event EventHandler FriendOnOffline;
+
+        protected virtual void OnFriendOnOffline(EventArgs e)
+        {
+            EventHandler handler = FriendOnOffline;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+    }
+
+    public class FriendOnOfflineEventArgs : EventArgs
+    {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public bool Online { get; set; }
     }
 }
