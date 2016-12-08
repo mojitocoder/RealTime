@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedServerClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,15 @@ namespace PlayerSimulation
 {
     public partial class Form1 : Form
     {
+        private Player player = new Player();
+        private IEnumerable<OnlineUser> friends;
+
         public Form1()
         {
             InitializeComponent();
+
+            //attach event handler
+            player.FriendOnOffline += Player_FriendOnOffline;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,8 +42,6 @@ namespace PlayerSimulation
             cboUser.ValueMember = "UserName";
         }
 
-        private Player player = new Player();
-
         private async void cboUser_SelectedIndexChanged(object sender, EventArgs e)
         {
             dynamic selectedItem = cboUser.Items[cboUser.SelectedIndex];
@@ -46,7 +51,7 @@ namespace PlayerSimulation
             player.Connect(username);
 
             //Now go and fetch the list of online users
-            var friends = await player.GetFriends();
+            friends = await player.GetFriends();
 
             //Print the list of all friends to the log
             var lines = friends.Select(foo => string.Format($"{foo.UserName} : {foo.FullName} : {foo.Online }"));
@@ -65,6 +70,25 @@ namespace PlayerSimulation
             cboFriend.DataSource = onlineFriends;
             cboFriend.DisplayMember = "ShownName";
             cboFriend.ValueMember = "UserName";
+        }
+
+        private void Player_FriendOnOffline(object sender, EventArgs e)
+        {
+            if (friends != null && friends.Count() > 0)
+            {
+                var friendOnOfflineArgs = e as FriendOnOfflineEventArgs;
+                var friend = friends.FirstOrDefault(foo => foo.UserName == friendOnOfflineArgs.UserName);
+                if (friend.Online)
+                {
+                    //add if necessary
+
+                }
+                else
+                {
+                    //remove if necessary
+
+                }
+            }
         }
 
         private void btnPlay_Click(object sender, EventArgs e)

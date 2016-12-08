@@ -50,6 +50,13 @@ namespace PlayerSimulation
             var x = hubProxy.On("NotifyFriends", (string friendUserName, bool online) =>
             {
                 Console.WriteLine($"User {friendUserName} has just come " + (online ? "online" : "offline"));
+
+                OnFriendOnOffline(new FriendOnOfflineEventArgs
+                {
+                    FullName = "",
+                    UserName = friendUserName,
+                    Online = online
+                });
             });
 
         }
@@ -111,11 +118,7 @@ namespace PlayerSimulation
 
         protected virtual void OnFriendOnOffline(EventArgs e)
         {
-            EventHandler handler = FriendOnOffline;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            FriendOnOffline?.Invoke(this, e);
         }
     }
 

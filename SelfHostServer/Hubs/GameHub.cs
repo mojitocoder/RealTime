@@ -11,7 +11,6 @@ namespace SelfHostServer
     public class GameHub : Hub
     {
         private readonly static ConnectionRegistry<string> connectionRegistry = new ConnectionRegistry<string>();
-        //private readonly sta
 
         private string GetUserName()
         {
